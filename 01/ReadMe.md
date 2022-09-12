@@ -2,11 +2,22 @@ pip install scikit-learn
 
 Apache Kafka :
 
+bin/kafka-server-start.sh config/server.properties
+
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+
+
+./kafka-topics.sh --create --topic orderstopic --bootstrap-server localhost:9092
+
+bin/kafka-topics.sh --list --bootstrap-server localhost:9092 all topics
+
+bin/kafka-topics.sh --create --topic test-topic --bootstrap-server localhost:9092 --replication-factor 1 --partitions 4
 create Topic :
 kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic orderstopic 
 
 delete topic IF WANT:
-kafka-topics.sh --zookeeper localhost:2181 --delete --topic orderstopic 
+kafka-topics.sh --zookeeper localhost:2181 --delete --topic orderstopic
+bin/kafka-topics.sh  --delete --topic orderstopic  --bootstrap-server localhost:9092 
 
 retrieve list of topics in kafka
 kafka-topics.sh --list --zookeeper localhost:2181
@@ -26,11 +37,11 @@ use sales_db;
 
 create table total_sales_by_source_state
 (
-    batch_id  int(11)  null ,
-    processed_at  datetime(50)  null,
+ source varchar(255)  null ,
+state varchar(255) null,
     total_sum_amount double null,
-    state varchar(255) null,
-    source varchar(255)  null
+    processed_at  datetime  null,
+batch_id  int(11)  null
 );
 
 -----------------------------------
@@ -61,9 +72,9 @@ CREATE TABLE sales_ks.order_tbl
     product_id text,
     quantity text,
     subtotal text,
-    tax text;
+    tax text,
     total text,
-    customer_id int,
+     int,
     timestamp text
 );
 
